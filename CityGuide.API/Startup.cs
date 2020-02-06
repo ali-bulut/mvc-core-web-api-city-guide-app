@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using CityGuide.API.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +32,8 @@ namespace CityGuide.API
             //appsettings.json'da oluþturduðumuz connectionstringi projeye ekleme
             services.AddDbContext<DataContext>(p =>
                 p.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //automapper'i projemize ekledik.
+            services.AddAutoMapper(typeof(Startup));
             services.AddControllers();
             //Cors Konfigürasyonunu projeye ekledik. Bu sayede baþka bir projede apimizden gelen formatlarý almak
             //için istekte bulunulduðunda bunu onaylayacaðýz.
