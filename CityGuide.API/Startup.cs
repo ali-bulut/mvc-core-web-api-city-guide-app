@@ -35,6 +35,8 @@ namespace CityGuide.API
             //Cors Konfigürasyonunu projeye ekledik. Bu sayede baþka bir projede apimizden gelen formatlarý almak
             //için istekte bulunulduðunda bunu onaylayacaðýz.
             services.AddCors();
+
+            services.AddScoped<IAppRepository, AppRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
