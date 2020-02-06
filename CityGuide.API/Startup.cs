@@ -32,6 +32,9 @@ namespace CityGuide.API
             services.AddDbContext<DataContext>(p =>
                 p.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
+            //Cors Konfigürasyonunu projeye ekledik. Bu sayede baþka bir projede apimizden gelen formatlarý almak
+            //için istekte bulunulduðunda bunu onaylayacaðýz.
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,6 +44,9 @@ namespace CityGuide.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            //istek hangi header'dan hangi methodtan(get-post gibi) nereden gelirse gelsin tüm istekleri onayla.
+            app.UseCors(p=>p.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
             app.UseHttpsRedirection();
 
