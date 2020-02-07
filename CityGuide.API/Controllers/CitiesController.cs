@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CityGuide.API.Data;
 using CityGuide.API.Dtos;
+using CityGuide.API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,5 +44,33 @@ namespace CityGuide.API.Controllers
 
             return Ok(citiesToReturn);
         }
+
+        [HttpPost]
+        [Route("Add")]
+        public IActionResult Add([FromBody]City city)
+        {
+            _repository.Add(city);
+            _repository.SaveAll();
+            return Ok(city);
+        }
+
+        [HttpGet]
+        [Route("Detail/{id}")]
+        public IActionResult GetCity(int id)
+        {
+            var city = _repository.GetCity(id);
+            var cityToReturn = _mapper.Map<CityForDetailDto>(city);
+
+            return Ok(cityToReturn);
+        }
+
+        [HttpGet]
+        [Route("Photos/{cityId}")]
+        public IActionResult GetPhotosByCity(int cityId)
+        {
+            var photos = _repository.GetPhotosByCity(cityId);
+            return Ok(photos);
+        }
+
     }
 }
