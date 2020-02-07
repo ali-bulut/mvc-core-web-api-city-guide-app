@@ -4,14 +4,14 @@ import {HttpClientModule} from '@angular/common/http'
 
 import { AppComponent } from './app.component';
 import { ValueComponent } from './value/value.component';
+import { NavComponent } from './nav/nav.component';
 
 @NgModule({
-   //eklemek istediğimiz componentleri burada projeye ekliyoruz.
    declarations: [
       AppComponent,
-      ValueComponent
+      ValueComponent,
+      NavComponent
    ],
-   //eklemek istediğimiz kütüphaneleri burada projeye ekliyoruz.
    imports: [
       BrowserModule,
       HttpClientModule
