@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CityGuide.API.Data;
+using CityGuide.API.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,10 @@ namespace CityGuide.API
             //anahtar appsettings.json'da tanýmlandý. Oradan value'sini çaðýrdýk.
             var key = Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value);
 
+            //appsettings.json'da yazýlan CloudinarySettings adý altýnda yazýlan 3 deðeri
+            //CloudinarySettings classý çaðýrýldýðýnda bu classa map et.
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
+
             //appsettings.json'da oluþturduðumuz connectionstringi projeye ekleme
             services.AddDbContext<DataContext>(p =>
                 p.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -56,6 +61,8 @@ namespace CityGuide.API
             services.AddCors();
 
             services.AddScoped<IAppRepository, AppRepository>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
+
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {

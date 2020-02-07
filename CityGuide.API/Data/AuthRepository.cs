@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CityGuide.API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CityGuide.API.Data
 {
@@ -38,14 +39,48 @@ namespace CityGuide.API.Data
             }
         }
 
-        public Task<User> Login(string userName, string password)
+        public async Task<User> Login(string userName, string password)
         {
-            throw new NotImplementedException();
+            var user = await _context.Users.FirstOrDefaultAsync(p => p.UserName == userName);
+            if (user==null)
+            {
+                return null;
+            }
+
+            if (!VerifyPasswordHash(password,user.PasswordHash,user.PasswordSalt))
+            {
+                return null;
+            }
+
+            return user;
         }
 
-        public Task<bool> UserExists(string userName)
+        private bool VerifyPasswordHash(string password, byte[] userPasswordHash, byte[] userPasswordSalt)
         {
-            throw new NotImplementedException();
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(userPasswordSalt))
+            {
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                for (int i = 0; i < computedHash.Length; i++)
+                {
+                    if (computedHash[i]!=userPasswordHash[i])
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        }
+
+        public async Task<bool> UserExists(string userName)
+        {
+            //true yada false döner. Eğer böyle bir userName varsa true döner.
+            if(await _context.Users.AnyAsync(p => p.UserName == userName))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
