@@ -34,7 +34,16 @@ namespace CityGuide.API
                 p.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             //automapper'i projemize ekledik.
             services.AddAutoMapper(typeof(Startup));
-            services.AddControllers();
+
+
+            //nuget'tan Microsoft.AspNetCore.Mvc.NewtonsoftJson bunu eklememiz lazým
+            //bunu eklememizin sebebi tablolar arasýnda geçiþse sonsuz döngü olursa ona aldýrma ve döngüye
+            //girme diyoruz.
+            services.AddControllers().AddNewtonsoftJson(opt =>
+                {
+                    opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
+
             //Cors Konfigürasyonunu projeye ekledik. Bu sayede baþka bir projede apimizden gelen formatlarý almak
             //için istekte bulunulduðunda bunu onaylayacaðýz.
             services.AddCors();
