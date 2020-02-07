@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CityGuide.API.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CityGuide.API
 {
@@ -23,12 +26,16 @@ namespace CityGuide.API
             Configuration = configuration;
         }
 
+
         //IConfiguration interface'i ile appsettings.json'a ulaþabiliriz.
         public IConfiguration Configuration { get; }
 
         //injection alaný (dependency injection)
         public void ConfigureServices(IServiceCollection services)
         {
+            //anahtar appsettings.json'da tanýmlandý. Oradan value'sini çaðýrdýk.
+            var key = Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value);
+
             //appsettings.json'da oluþturduðumuz connectionstringi projeye ekleme
             services.AddDbContext<DataContext>(p =>
                 p.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -49,6 +56,19 @@ namespace CityGuide.API
             services.AddCors();
 
             services.AddScoped<IAppRepository, AppRepository>();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    //tokena baþkalarý eriþemesin diye içine kendi anahtarýmýzý koyarýz
+                    ValidateIssuerSigningKey = true,
+                    //kendi anahtarýmýzý verdik.
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,6 +87,7 @@ namespace CityGuide.API
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
