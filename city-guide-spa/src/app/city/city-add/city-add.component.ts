@@ -2,6 +2,7 @@ import { Component, OnInit, NgModule } from '@angular/core';
 import { CityService } from 'src/app/services/City.service';
 import {FormGroup,FormControl,Validators,FormBuilder,ReactiveFormsModule} from '@angular/forms'
 import { City } from 'src/app/models/City';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { City } from 'src/app/models/City';
 })
 export class CityAddComponent implements OnInit {
 
-  constructor(private cityService:CityService, private formBuilder:FormBuilder) { }
+  constructor(private cityService:CityService, private formBuilder:FormBuilder, private authService:AuthService) { }
 
   city:City;
   //validationları buranın üstünden yapıyoruz.
@@ -34,8 +35,7 @@ export class CityAddComponent implements OnInit {
     if(this.cityAddForm.valid){
       //cityAddForm'un valuesini oku onu {} boş objeye ata. O oluşturduğun objeyi de city'ye eşitle.
       this.city=Object.assign({},this.cityAddForm.value)
-      //Todo
-      this.city.userId=1;
+      this.city.userId=this.authService.getCurrentUserId();
       this.cityService.add(this.city);
     }
   }
