@@ -13,24 +13,30 @@ import { appRoutes } from "./routes";
 import { CityDetailComponent } from "./city/city-detail/city-detail.component";
 import { CityAddComponent } from './city/city-add/city-add.component';
 import {AlertifyService} from './services/alertify.service'
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    ValueComponent,
-    NavComponent,
-    CityComponent,
-    CityDetailComponent,
-    CityAddComponent
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    FormsModule,
-    RouterModule.forRoot(appRoutes)
-  ],
-  providers: [AlertifyService],
-  bootstrap: [AppComponent]
+   declarations: [
+      AppComponent,
+      ValueComponent,
+      NavComponent,
+      CityComponent,
+      CityDetailComponent,
+      CityAddComponent,
+      RegisterComponent
+   ],
+   imports: [
+      BrowserModule,
+      HttpClientModule,
+      ReactiveFormsModule,
+      FormsModule,
+      RouterModule.forRoot(appRoutes)
+   ],
+   providers: [
+      AlertifyService
+   ],
+   bootstrap: [
+      AppComponent
+   ]
 })
 export class AppModule {}

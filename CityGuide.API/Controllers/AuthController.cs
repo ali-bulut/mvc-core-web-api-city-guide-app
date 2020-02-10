@@ -15,6 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CityGuide.API.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
