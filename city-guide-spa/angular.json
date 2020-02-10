@@ -24,9 +24,15 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "../city-guide-spa/node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "../city-guide-spa/node_modules/font-awesome/css/font-awesome.min.css",
+              "../city-guide-spa/node_modules/bootswatch/dist/minty/bootstrap.min.css",
+              "../city-guide-spa/node_modules/alertifyjs/build/css/alertify.min.css",
+              "../city-guide-spa/node_modules/alertifyjs/build/css/themes/bootstrap.min.css"
             ],
-            "scripts": []
+            "scripts": [
+              "../city-guide-spa/node_modules/alertifyjs/build/alertify.min.js"
+            ]
           },
           "configurations": {
             "production": {

@@ -38,7 +38,8 @@ namespace CityGuide.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddPhotoForCity(int cityId, [FromBody]PhotoForCreationDto photoForCreationDto)
+        //media geleceği için FromForm yapmamız lazım.
+        public IActionResult AddPhotoForCity(int cityId, [FromForm]PhotoForCreationDto photoForCreationDto)
         {
             var city = _repository.GetCity(cityId);
 
@@ -84,6 +85,8 @@ namespace CityGuide.API.Controllers
 
             if (_repository.SaveAll())
             {
+                //city.Id = photo.CityId;
+                //photo.Description = city.Description;
                 var photoToReturn = _mapper.Map<PhotoForReturnDto>(photo);
                 return CreatedAtRoute("GetPhoto", new {id = photo.Id}, photoToReturn);
             }

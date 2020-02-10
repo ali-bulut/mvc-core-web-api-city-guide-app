@@ -17,12 +17,13 @@ namespace CityGuide.API.Helpers
             CreateMap<City, CityForListDto>()
                 .ForMember(dest=>dest.PhotoUrl, opt =>
                 {
+                    //eğer ana fotoğrafsa url'ini çek ve PhotoUrl propertysine yaz.
                     opt.MapFrom(src=>src.Photos.FirstOrDefault(p=>p.IsMain).Url);
                 });
 
             CreateMap<City, CityForDetailDto>();
-            CreateMap<Photo, PhotoForCreationDto>();
-            CreateMap<PhotoForReturnDto, Photo>();
+            CreateMap<PhotoForCreationDto, Photo>();
+            CreateMap<Photo, PhotoForReturnDto>();
 
         }
     }
