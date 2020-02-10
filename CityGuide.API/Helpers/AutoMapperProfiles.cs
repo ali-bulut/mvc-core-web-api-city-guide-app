@@ -17,6 +17,7 @@ namespace CityGuide.API.Helpers
             CreateMap<City, CityForListDto>()
                 .ForMember(dest=>dest.PhotoUrl, opt =>
                 {
+                    //eğer ana fotoğrafsa url'ini çek ve PhotoUrl propertysine yaz.
                     opt.MapFrom(src=>src.Photos.FirstOrDefault(p=>p.IsMain).Url);
                 });
 
